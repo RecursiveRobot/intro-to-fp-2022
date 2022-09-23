@@ -1,0 +1,492 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>An Introduction to Functional Programming</title>
+
+	<link rel="stylesheet" href="dist/reset.css">
+	<link rel="stylesheet" href="dist/reveal.css">
+	<link rel="stylesheet" href="dist/theme/bsc.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="plugin/highlight/monokai.css">
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section data-markdown>
+				<script type="text/template">
+						# An Introduction to Functional Programming
+
+						<img src="./images/haskell_logo.png" style="width: 400px; height: 240px;" />
+
+						##### Attie Naude
+					</script>
+			</section>
+			<section>
+				<section data-markdown>
+					<script type="text/template">
+						## What is Functional Programming?
+						<img src="./images/programming.gif" width="440" height="400" />
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+							## What is a Function?
+							* Mathematical Function <!-- .element: class="fragment" -->
+								* Maps set of input parameters to an output <!-- .element: class="fragment" -->
+								* Same Input -> Same Output <!-- .element: class="fragment" -->
+							* Pure <!-- .element: class="fragment" -->
+								* No side-effects <!-- .element: class="fragment" -->
+								* No access to external state <!-- .element: class="fragment" -->
+							* Referentially Transparent <!-- .element: class="fragment" -->
+								* Function invocation can be replaced by result without any effect on program <!-- .element: class="fragment" -->
+						</script>
+
+					<aside class="notes">
+						* A "function" in FP is more constrained than a JS/Python function.
+						* FP functions are pure and referentially transparent
+					</aside>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+							## What is Functional Programming?
+							* Declarative style of programming <!-- .element: class="fragment" -->
+						</script>
+
+					<aside class="notes">
+						* Imperative programming involves providing a sequence of instructions to the computer, which must be
+						followed in order.
+						* Declarative programming is more abstracted and does not translate directly to instructions.
+						Compiler/interpreter translates declarative code into [0, n] steps and figures out order of execution.
+					</aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+							## Imperative Code
+							<pre>
+								<code class="hljs js" data-trim contenteditable data-line-numbers="1-11|2|3|5,11|6|7,9|8|10|1-11">
+
+									let animals = ["cat", "dog", "bird"];
+									let i = 0;
+									let result = "";
+
+									while (i < animals.length) {
+										result += animals[i];
+										if (i !== animals.length - 1) {
+											result += ", ";
+										}
+										i++;
+									}
+
+								</code>
+							</pre>
+
+							Notes:
+							- Explicit steps which map closely to machine instructions
+							- Lots of manual control flow
+							- Mutation of variables all around
+							- Different variable values at different points
+						</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+							## Declarative Code
+							<pre>
+								<code class="hljs tsql" data-trim contenteditable>
+									SELECT
+										*
+									FROM
+										Users
+									WHERE
+										Age > 30
+									ORDER BY
+										Name
+								</code>
+							</pre>
+						</script>
+
+					Notes:
+					- Abstraction over explicit instructions
+					- More compact
+					- Easy to read, even for non-SQL Users
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+							## What is Functional Programming?
+							* Declarative style of programming
+							* Treats functions as values <!-- .element: class="fragment" -->
+						</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+							## Functions are Values
+							<pre>
+								<code class="hljs python" data-trim contenteditable data-line-numbers="2|5|7|10,11">
+
+									# Assign function to variable
+									my_predicate = lambda x: x > 10
+
+									# Function as parameter
+									def my_filter(predicate):
+										# Function as result
+										return lambda values: filter(predicate, values)
+
+									# Putting it all together
+									my_filter(my_predicate)([4, 25, 7, 12])
+									# Result: [25, 12]
+
+								</code>
+							</pre>
+
+							Note:
+							- Can be used anywhere a value can:
+								- Can be assigned to variables
+								- Can be passed as input parameters to functions
+								- Can be returned as the result of a function call
+						</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+							## What is Functional Programming?
+							* Declarative style of programming
+							* Treats functions as values
+							* Consists of composing and evaluating expressions <!-- .element: class="fragment" -->
+							* Emphasizes code reuse <!-- .element: class="fragment" -->
+						</script>
+
+					Notes:
+					- Combine 2 or more functions into a new function
+					- Evaluation done via substitution
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+							## Benefits
+							* Easy for humans to reason about <!-- .element: class="fragment" -->
+								* No temporal coupling <!-- .element: class="fragment" -->
+								* No external state <!-- .element: class="fragment" -->
+							* Testability <!-- .element: class="fragment" -->
+							* Code reuse <!-- .element: class="fragment" -->
+								* Separate data + logic <!-- .element: class="fragment" -->
+								* Composable <!-- .element: class="fragment" -->
+								* Generic by default <!-- .element: class="fragment" -->
+							* Use type system to reason about computation* <!-- .element: class="fragment" -->
+							* Use lambda calculus to reason about computation <!-- .element: class="fragment" -->
+								* Compiler optimizations <!-- .element: class="fragment" -->
+								* Lazy evaluation <!-- .element: class="fragment" -->
+						</script>
+				</section>
+			</section>
+
+			<section>
+				<section data-markdown>
+					<script type="text/template">
+						## How do we do FP?
+						<img src="./images/how.gif" width="600" height="400" />
+					</script>
+				</section>
+
+				<section>
+					<h2>Basic FP Building Blocks</h2>
+
+					<ul>
+						<li class="fragment">
+							Higher-Order Function
+							<ul>
+								<li>Function that takes another function as input or returns a function as result</li>
+							</ul>
+						</li>
+
+						<li class="fragment">
+							Function Composition
+							<ul>
+								<li>Combines 2 or more functions into a new function</li>
+								<li><code class="hljs haskell inline">(a -> b) -> (b -> c) -> (a -> c)</code></li>
+							</ul>
+						</li>
+
+						<li class="fragment">
+							Partial Application
+							<ul>
+								<li>Call function with less parameters than expected</li>
+								<li>Returns a function taking the rest or result</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Type Signatures</h2>
+
+					<ul>
+						<li class="fragment">
+							As per lambda calculus
+							<ul>
+								<li>Function takes in single parameter</li>
+								<li>Returns result or partially applied function</li>
+							</ul>
+						</li>
+
+						<li class="fragment">
+							Concrete types are capitalized
+						</li>
+
+						<li class="fragment">
+							Parameterized types are lowercase
+						</li>
+
+						<li class="fragment">
+							Optional Type Constraints come before <quote>=></quote> symbol
+						</li>
+					</ul>
+
+					<aside class="notes">
+						- Lambda calculus invented by Alonzo Church in 1930s
+						- Formal system for expressing computation using mathematical logic
+					</aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+							## Some Examples
+							<pre>
+								<code class="hljs haskell hide-line-numbers" data-trim contenteditable data-line-numbers="1|2|3|4|5">
+									Int -> String
+									Int -> Int -> Int
+									a -> a
+									a -> (a -> b) -> b
+									Num a => a -> a
+								</code>
+							</pre>
+						</script>
+				</section>
+
+				<section>
+					<h2>Type Classes</h2>
+
+					<ul>
+						<li class="fragment">
+							Similar to interfaces in OO
+							<ul>
+								<li>Defines behaviour</li>
+								<li>Types implement that behaviour</li>
+							</ul>
+						</li>
+
+						<li class="fragment">
+							Much more powerful
+							<ul>
+								<li>Instances implemented separately from type definitions</li>
+								<li>Can be added to any type (including base types)</li>
+								<li>Allows multiple type parameters</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+							#### Haskell Type Class Hierarchy <!-- .element: class="flush" -->
+							<img style="height: 600px;" src="https://cs.lmu.edu/~ray/images/haskell-typeclasses.png" />
+
+							Notes:
+							- Just to give you an idea of the various typeclasses available
+							- Thanks to its mathematical background, has entire hierarchy just for numeric typeclasses
+						</script>
+				</section>
+
+				<section>
+					<h4>Number of Possible Implementations of Function?</h4>
+
+					<ul>
+						<li class="fragment">
+							<code class="hljs haskell inline min-width">a -> a</code>
+							<ul class="fragment">
+								<li>identity</li>
+							</ul>
+						</li>
+
+						<li class="fragment">
+							<code class="hljs haskell inline min-width">a -> b</code>
+							<ul class="fragment">
+								<li>None</li>
+							</ul>
+						</li>
+
+						<li class="fragment">
+							<code class="hljs haskell inline min-width">(a, a) -> a</code>
+							<ul class="fragment">
+								<li>fst</li>
+								<li>snd</li>
+							</ul>
+						</li>
+
+						<li class="fragment">
+							<code class="hljs haskell inline min-width">a -> b -> a</code>
+							<ul class="fragment">
+								<li>const</li>
+							</ul>
+						</li>
+
+						<li class="fragment">
+							<code class="hljs haskell inline min-width">Num a => a -> a -> a</code>
+							<ul class="fragment">
+								<li>
+									Infinite combinations of +, -, *
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+				<section data-markdown>
+					<script type="text/markup">
+							## Hoogle
+
+							* [`a -> a`](https://hoogle.haskell.org/?hoogle=a%20-%3E%20a&scope=set%3Aincluded-with-ghc)
+							* [`(a, a) -> a`](https://hoogle.haskell.org/?hoogle=(a%2C%20a)%20-%3E%20a&scope=set%3Aincluded-with-ghc)
+							* [`[a] -> a`](https://hoogle.haskell.org/?hoogle=%5Ba%5D%20-%3E%20a&scope=set%3Aincluded-with-ghc)
+							* [`[a] -> Int`](https://hoogle.haskell.org/?hoogle=%5Ba%5D%20-%3E%20Int&scope=set%3Aincluded-with-ghc)
+							* [`[Char] -> [Char] -> Bool`](https://hoogle.haskell.org/?hoogle=%5BChar%5D%20-%3E%20%5BChar%5D%20-%3E%20Bool&scope=set%3Aincluded-with-ghc)
+							* [`Num a => a -> a -> a`](https://hoogle.haskell.org/?hoogle=Num%20a%20%3D%3E%20a%20-%3E%20a%20-%3E%20a&scope=set%3Aincluded-with-ghc)
+							* [`(a -> b) -> [a] -> [b]`](https://hoogle.haskell.org/?hoogle=(a%20-%3E%20b)%20-%3E%20%5Ba%5D%20-%3E%20%5Bb%5D&scope=set%3Aincluded-with-ghc)
+						</script>
+
+					Notes:
+					- Since the type signature is (possibly) so closely linked to the implementation, the type signature alone
+					allows us to find existing implementations.
+				</section>
+			</section>
+
+			<section>
+				<section data-markdown>
+					<script type="text/template">
+						## Getting Started
+						* Use your current language
+						* Adopt an FP language
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## What your language will need
+						* Lambdas/Anonymous functions <!-- .element: class="fragment" -->
+						* Higher-order functions in base libraries <!-- .element: class="fragment" -->
+							* Functors/Foldables <!-- .element: class="fragment" -->
+								* IEnumerable in C# <!-- .element: class="fragment" -->
+									* .Select() <!-- .element: class="fragment" -->
+									* .Where() <!-- .element: class="fragment" -->
+									* .Aggregate() <!-- .element: class="fragment" -->
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## What your language will need
+						* Lambdas/Anonymous functions
+						* Higher-order functions in base libraries
+							* Functors/Foldables
+								* IEnumerable in C#
+								* [] in JavaScript <!-- .element: class="fragment" -->
+									* .map() <!-- .element: class="fragment" -->
+									* .filter() <!-- .element: class="fragment" -->
+									* .reduce() <!-- .element: class="fragment" -->
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## What your language will need
+						* Lambdas/Anonymous functions
+						* Higher-order functions in base libraries
+							* Functors/Foldables
+								* IEnumerable in C#
+								* [] in JavaScript
+								* Iterables in Python <!-- .element: class="fragment" -->
+									* map() <!-- .element: class="fragment" -->
+									* filter() <!-- .element: class="fragment" -->
+									* reduce() <!-- .element: class="fragment" -->
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## What your language will need
+						* Lambdas/Anonymous functions
+						* Higher-order functions in base libraries
+							* Functors/Foldables
+							* Continuation-passing targets <!-- .element: class="fragment" -->
+								* Event Handlers <!-- .element: class="fragment" -->
+								* Promises <!-- .element: class="fragment" -->
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## What your language will need
+						* Lambdas/Anonymous functions
+						* Higher-order functions in base libraries
+						* Bonus points: <!-- .element: class="fragment" -->
+							* Algebraic data types <!-- .element: class="fragment" -->
+							* Type inference <!-- .element: class="fragment" -->
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Adopt an FP language
+						* Re-use existing ecosystem <!-- .element: class="fragment" -->
+							* C# -> F# <!-- .element: class="fragment" -->
+							* Java -> Scala/Clojure <!-- .element: class="fragment" -->
+						* Start fresh <!-- .element: class="fragment" -->
+							* Haskell <!-- .element: class="fragment" -->
+							* PureScript <!-- .element: class="fragment" -->
+							* Idris <!-- .element: class="fragment" -->
+					</script>
+				</section>
+			</section>
+
+			<section data-markdown>
+				<script type="text/template">
+					## Let's see some code!
+					<img src="./images/programming2.gif" width="600" height="400" />
+				</script>
+			</section>
+
+			<section data-markdown>
+				<script type="text/template">
+					## Questions?
+					<img src="./images/questions.gif" width="560" height="400" />
+				</script>
+			</section>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+		// More info about initialization & config:
+		// - https://revealjs.com/initialization/
+		// - https://revealjs.com/config/
+		Reveal.initialize({
+			hash: true,
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+		});
+	</script>
+</body>
+
+</html>
