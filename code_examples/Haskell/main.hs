@@ -6,33 +6,6 @@ import Data.Text (pack)
 
 -- #endregion
 
--- Define data
-characters =
-  [ 
-    "Rusty Venture",
-    "Brock Sampson",
-    "Dean Venture",
-    "Hank Venture",
-    "Helper Robot",
-    "Dr. Orpheus",
-    "The Monarch",
-    "Dr. Girlfriend"
-  ]
-
--- Create predicate
-isDirectFamily = isInfixOf "Venture"
-
--- Filter data
-directFamily = filter isDirectFamily characters
-
--- Aggregate data
-doctorCount = length $ filter (isInfixOf "Dr.") characters
-
-charactersByLastName = fmap formatResult $ group $ sort $ getLastName <$> characters
-  where
-    getLastName = pack . (!! 1) . words
-    formatResult ns = (head ns, length ns)
-
 -- Partially Applied/Curried Functions
 add2numbers (a, b) = a + b
 add2numbersPartial a b = a + b
@@ -48,6 +21,28 @@ mult5 = (*) 5
 plus12mult5 = mult5 . plus12
 
 _ = plus12mult5 1
+
+-- Higher-Order Functions
+characters =
+  [ 
+    "Rusty Venture",
+    "Brock Sampson",
+    "Dean Venture",
+    "Hank Venture",
+    "Helper Robot",
+    "Dr. Orpheus",
+    "The Monarch",
+    "Dr. Girlfriend"
+  ]
+
+isDirectFamily = isInfixOf "Venture"
+directFamily = filter isDirectFamily characters
+doctorCount = length $ filter (isInfixOf "Dr.") characters
+
+charactersByLastName = fmap formatResult $ group $ sort $ getLastName <$> characters
+  where
+    getLastName = pack . (!! 1) . words
+    formatResult ns = (head ns, length ns)
 
 -- Pattern Matching
 data Shape

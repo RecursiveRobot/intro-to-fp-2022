@@ -6,33 +6,6 @@ import R from "ramda";
 
 // #endregion
 
-// Define data
-const characters =
-[
-	"Rusty Venture",
-	"Brock Sampson",
-	"Dean Venture",
-	"Hank Venture",
-	"Helper Robot",
-	"Dr. Orpheus",
-	"The Monarch",
-	"Dr. Girlfriend"
-];
-
-// Create predicate
-const isDirectFamily = (name: string) => name.includes("Venture");
-
-// Filter data
-const directFamily = characters.filter(isDirectFamily);
-
-// Aggregate data
-const doctorCount = characters.filter(n => n.includes("Dr.")).length;
-
-const charactersByLastName = _.chain(characters)
-	.map(n => n.split(" ")[1])
-	.groupBy(n => n)
-	.map(ns => [ns[0], ns.length] as [string, number]).value();
-
 // Partially Applied/Curried Functions
 const add2numbers = (a: number, b: number) => a + b;
 const add2numbersPartial = (a: number) => (b: number) => a + b;
@@ -48,6 +21,28 @@ function compose<T1, T2, T3>(f: (_: T2) => T3, g: (_: T1) => T2) { return (x: T1
 const plus12mult5 = compose(mult5, plus12);
 
 plus12mult5(1)
+
+// Higher-Order Functions
+const characters =
+[
+	"Rusty Venture",
+	"Brock Sampson",
+	"Dean Venture",
+	"Hank Venture",
+	"Helper Robot",
+	"Dr. Orpheus",
+	"The Monarch",
+	"Dr. Girlfriend"
+];
+
+const isDirectFamily = (name: string) => name.includes("Venture");
+const directFamily = characters.filter(isDirectFamily);
+const doctorCount = characters.filter(n => n.includes("Dr.")).length;
+
+const charactersByLastName = _.chain(characters)
+	.map(n => n.split(" ")[1])
+	.groupBy(n => n)
+	.map(ns => [ns[0], ns.length] as [string, number]).value();
 
 // Pattern Matching
 type Circle = { kind: "Circle", radius: number };

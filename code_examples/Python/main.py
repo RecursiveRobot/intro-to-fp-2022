@@ -6,33 +6,6 @@ import math
 from dataclasses import dataclass
 #endregion
 
-# Define data
-characters = \
-[
-  "Rusty Venture",
-  "Brock Sampson",
-  "Dean Venture",
-  "Hank Venture",
-  "Helper Robot",
-  "Dr. Orpheus",
-  "The Monarch",
-  "Dr. Girlfriend"
-]
-
-# Create predicate
-isDirectFamily = lambda name: name.contains("Venture")
-
-# Filter data
-directFamily = filter(isDirectFamily, characters)
-
-# Aggregate data
-doctorCount = len(filter(lambda n: n.contains("Dr."), characters))
-
-charactersByLastName = fluent(characters) \
-  .map(lambda n: n.split(" ")[1]) \
-  .group_by(lambda n: n) \
-  .map_values(len).to_dict()
-
 # Partially Applied/Curried Functions
 add2numbers = lambda a, b: a + b
 add2numbersPartial = lambda a: lambda b: a + b
@@ -49,8 +22,32 @@ plus12mult5 = compose(mult5, plus12)
 
 plus12mult5(1)
 
+# Higher-Order Functions
+characters = \
+[
+  "Rusty Venture",
+  "Brock Sampson",
+  "Dean Venture",
+  "Hank Venture",
+  "Helper Robot",
+  "Dr. Orpheus",
+  "The Monarch",
+  "Dr. Girlfriend"
+]
+
+isDirectFamily = lambda name: name.contains("Venture")
+directFamily = filter(isDirectFamily, characters)
+doctorCount = len(filter(lambda n: n.contains("Dr."), characters))
+
+charactersByLastName = fluent(characters) \
+  .map(lambda n: n.split(" ")[1]) \
+  .group_by(lambda n: n) \
+  .map_values(len).to_dict()
+
 # Pattern matching
+@dataclass
 class Shape(): ()
+@dataclass
 class Circle(Shape):
   radius: float
 @dataclass

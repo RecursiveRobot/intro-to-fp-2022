@@ -6,33 +6,6 @@
 
 #endregion
 
-// Define data
-var characters = new List<string>
-{
-  "Rusty Venture",
-  "Brock Sampson",
-  "Dean Venture",
-  "Hank Venture",
-  "Helper Robot",
-  "Dr. Orpheus",
-  "The Monarch",
-  "Dr. Girlfriend"
-};
-
-// Create predicate
-var isDirectFamily = (string name) => name.Contains("Venture");
-
-// Filter data
-var directFamily = characters.Where(isDirectFamily);
-
-// Aggregate data
-var doctorCount = characters.Where(n => n.Contains("Dr.")).Count();
-
-var charactersByLastName = characters
-  .Select(n => n.Split(" ")[1])
-  .GroupBy(n => n)
-  .Select(ns => (ns.Key, ns.Count()));
-
 // Partially Applied/Curried Functions
 var add2numbers = (int a, int b) => a + b;
 var add2numbersPartial = (int a) => (int b) => a + b;
@@ -48,6 +21,28 @@ static Func<T1, T3> Compose<T1, T2, T3>(Func<T2, T3> f, Func<T1, T2> g) { return
 var plus12mult5 = Compose(mult5, plus12);
 
 plus12mult5(1);
+
+// Higher-Order Functions
+var characters = new List<string>
+{
+  "Rusty Venture",
+  "Brock Sampson",
+  "Dean Venture",
+  "Hank Venture",
+  "Helper Robot",
+  "Dr. Orpheus",
+  "The Monarch",
+  "Dr. Girlfriend"
+};
+
+var isDirectFamily = (string name) => name.Contains("Venture");
+var directFamily = characters.Where(isDirectFamily);
+var doctorCount = characters.Where(n => n.Contains("Dr.")).Count();
+
+var charactersByLastName = characters
+  .Select(n => n.Split(" ")[1])
+  .GroupBy(n => n)
+  .Select(ns => (ns.Key, ns.Count()));
 
 // Pattern Matching
 abstract record Shape {}
