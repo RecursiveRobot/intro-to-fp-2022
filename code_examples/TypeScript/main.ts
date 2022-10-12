@@ -26,7 +26,7 @@ plus12mult5(1)
 const characters =
 [
 	"Rusty Venture",
-	"Brock Sampson",
+	"Brock Samson",
 	"Dean Venture",
 	"Hank Venture",
 	"Helper Robot",
@@ -45,10 +45,10 @@ const charactersByLastName = _.chain(characters)
 	.map(ns => [ns[0], ns.length] as [string, number]).value();
 
 // Pattern Matching
+type Shape = Circle | Rectangle | Triangle;
 type Circle = { kind: "Circle", radius: number };
 type Rectangle = { kind: "Rectangle", width: number, height: number };
 type Triangle = { kind: "Triangle", side1: number, side2: number, side3: number };
-type Shape = Circle | Rectangle | Triangle;
 
 function getArea(shape: Shape) {
 	switch (shape.kind) {

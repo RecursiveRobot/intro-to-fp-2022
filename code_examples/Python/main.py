@@ -26,7 +26,7 @@ plus12mult5(1)
 characters = \
 [
   "Rusty Venture",
-  "Brock Sampson",
+  "Brock Samson",
   "Dean Venture",
   "Hank Venture",
   "Helper Robot",

@@ -26,7 +26,7 @@ plus12mult5(1);
 var characters = new List<string>
 {
   "Rusty Venture",
-  "Brock Sampson",
+  "Brock Samson",
   "Dean Venture",
   "Hank Venture",
   "Helper Robot",
